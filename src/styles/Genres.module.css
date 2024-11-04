@@ -1,0 +1,24 @@
+
+.genre_count {
+    float: right;
+    font-size: 7pt;
+    margin-top: 11px;
+}
+
+.checkbox_line {
+    vertical-align: bottom;
+    height: 22px;
+}
+
+.genres_clear {
+    display: inline-block;
+    clear: both;
+    width: 100%;
+    text-align: right;
+    margin-bottom: 10px;
+}
+
+.genres {
+    text-align: left;
+}
+

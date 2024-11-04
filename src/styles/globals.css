@@ -40,3 +40,7 @@ a {
     color-scheme: dark;
   }
 }
+
+img {
+  display: inline-block;
+}

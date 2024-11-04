@@ -1,0 +1,412 @@
+.left,
+.center,
+.right {
+    float: left;
+    font-size: 10pt;
+    width: 35%;
+    padding: 20px;
+    padding-top: 0;
+    font-size: 80%;
+}
+
+.center {
+    width: 30%;
+    font-size: 12pt;
+}
+
+.search_results {
+    padding-bottom: 100px;
+}
+
+.ysearch_results {
+    height: 100%;
+	width: 100%;
+    padding-bottom: 100px;
+    position: relative;
+    background-color: black;
+    color: white;
+}
+
+.movie_page {
+    position: relative;
+}
+
+.main_page {
+    height: 100vh;
+    width: 100vw;
+    overflow: auto;
+    background-color: black;
+
+}
+
+.card {
+    position: relative;
+    float: left;
+    width: 100%;
+    margin: 5px;
+    padding: 5px;
+    border: 1px solid rgb(100,100,100,1);
+    display: flex;
+    align-items: flex-start;
+    font-weight: 200;
+    break-inside: avoid-column;
+}
+
+.center .card {
+    border: 1px solid black;
+}
+
+.left .card, .right .card {
+    cursor: pointer;
+}
+
+.card .person {
+    margin-bottom: 5px;
+    break-inside: avoid-column;
+    max-width: 100%;
+}
+
+.card .person_name {
+    font-weight: 600;
+    max-width: 100%;
+    cursor: pointer;
+}
+
+.card .movie_title {
+    font-weight: 600;
+    float: left;
+    font-size: 120%;
+}
+
+.center .card .movie_title {
+    text-align: center;
+}
+
+.search_results .card .movie_title {
+    font-size: 180%;
+}
+
+.center .card .movie_title {
+    font-size:150%;
+}
+
+.card hr {
+    clear: both;
+    margin-bottom: 10px;
+}
+
+.card .star_rating {
+    color: orange;
+    margin-right: 3px;
+}
+
+.card .person .age {
+    margin-left: 2px;
+    font-size: 80%;
+}
+
+.search_results .age {
+    display: none
+}
+
+.card .card_text {
+    display: inline-block;
+    font-weight: 200;
+    text-align: center;
+}
+
+.search_results .card .card_text {
+    width: 100%;
+}
+
+.left .card img, .right .card img {
+    max-width: 50%;
+    padding-left: 10px;
+    display: inline-block;
+}
+
+.center .card img {
+    max-width: 100%;
+    margin-bottom: 10px;
+}
+
+.card .plot_summary {
+    text-align: left;
+}
+
+.card .persons {
+    column-count: 2;
+    font-size: 90%;
+    margin: 10px;
+    text-align: left;
+}
+
+.card .metadata {
+    bottom: 3px;
+    margin-top: 5px;
+    cursor: pointer;
+}
+
+.card .year {
+    margin-right: 7px;
+}
+
+.card .genres {
+    white-space: nowrap;
+}
+
+
+
+.search_results .persons {
+    margin-top: 10px;
+    max-width: 100%;
+    overflow:hidden;
+    max-height: 180px;
+    margin-bottom: 10px;
+}
+
+.search_results .card {
+    width: 30%;
+    float: left;
+    font-size: 80%;
+    height: 210px;
+    cursor: pointer;
+}
+
+.search_results .card img {
+    max-height: 100%;
+    float: right;
+}
+
+.search_results .car_black .plot_summary {
+    display: none;
+}
+
+.search_results .role {
+    display: block;
+}
+
+.search_results .card .metadata {
+    position: relative;
+    bottom: 10px;
+}
+
+
+.search_results {
+
+    height: 100vh;
+    overflow: auto;
+    position: relative;
+    float: left;
+    background-color: black;
+    padding-left: 280px;
+}
+
+
+
+.movie_page .page_subtitle{
+    margin-left: 10px;
+}
+
+.controls {
+    width: 280px;
+    height: 100%;
+    text-align: center;
+    margin: 10px;
+    padding: 10px;
+    border: 1px solid gray;
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-size: 100%;
+    position: fixed;
+    background: lightgray;
+}
+
+
+.controls input {
+    margin: 3px;
+    margin-top: 10px;
+}
+
+.controls .page_title {
+    text-align: center;
+}
+
+.search_input:placeholder-shown {
+    font-style: italic;
+ }
+
+.search_results .date_left_arrow {
+    display: inline-block;
+    transform: rotate(180deg);
+    cursor: pointer;
+
+}
+
+.search_results .date_right_arrow {
+    display: inline-block;
+    cursor: pointer;
+}
+
+
+
+.page_title {
+    position: relative;
+    margin: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 30px;
+    font-size: 180%;
+    font-weight: 600;
+    text-align: left;
+}
+
+.page_subtitle {
+    font-size: 10pt;
+    font-style: italic;
+    font-weight: 200;
+}
+
+.controls .page_title {
+    margin-left: 0;
+}
+
+.search_results .date_picker {
+    font-size: 120%;
+    margin-bottom: 0;
+    margin-top: 0;
+    white-space: nowrap;
+    clear: both;
+}
+
+.year_picker {
+    margin-top: 0;
+    font-size:2%;
+    margin-bottom: 10px;
+}
+
+.year_picker span {
+    margin-left: -1px;
+}
+
+.selected_actor {
+    color: red;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.selected_actor img {
+   width: 180px;
+}
+
+.date_widget {
+    margin-top: 10px;
+    border: 1px solid gray;
+}
+
+.spinner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    padding-top: 200px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.05);
+    z-index: 9;
+    font-size: 64pt;
+}
+
+.spinner img {
+    width: 80px;
+}
+
+.search_results .card_black img {
+    max-width: 200px;
+    padding-left: 0;
+}
+
+.search_results .card_black .card_text {
+    display: none;
+}
+
+.search_results .card {
+    width: 210px;
+    height: 300px;
+    margin: 10px;
+}
+
+.search_results .card_black {
+    background-color: black;
+    margin: 10px;
+}
+
+
+.search_results .card_white::-webkit-scrollbar {
+    display: none;
+  }
+.controls::-webkit-scrollbar {
+    display: none;
+  }
+
+.search_results .card_white {
+    background-color: black;
+    color: white;
+    overflow: auto;
+}
+
+.center .card {
+    text-align: center;
+}
+
+
+.search_results .card_white img {
+    width: 0;
+    position: absolute;
+}
+
+.search_results .card_white .card_text {
+    width: 100%;
+    background-color: black;
+    position: relative;
+    z-index: 2;
+}
+
+.search_results .plot_summary {
+    background-color: rgb(240, 240, 240, 1);
+    color: black;
+    margin: 5px;
+    padding: 5px;
+    z-index: 2;
+    position: relative;
+}
+
+
+
+.search_results .controls {
+    background-color: lightgray;
+    color: black;
+}
+
+.card .card_text {
+     animation: fadeIn 1s; 
+}
+
+.search_results img {
+    transition-delay: 1s;
+    transition-property: width;
+}
+
+.center .trailers {
+    margin: 5px;
+    text-align: center;
+    width: 100%;
+}
+
+.banner {
+    height: 20px;
+    width: 100%;
+    border: 1px solid darkgray;
+    margin: 5px;
+    background-color: black;
+    color: white;
+}
