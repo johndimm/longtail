@@ -57,9 +57,7 @@ const Trailer = ({ tmdb_id, titletype }) => {
 
 const Movie = ({
   tconst,
-  moviePageStyle,
-  setMoviePageStyle,
-  setSearchPageStyle
+  hideSearchPage
 }) => {
   const [data, setData] = useState([])
   const [nconst, setNconst] = useState(null)
@@ -79,7 +77,7 @@ const Movie = ({
     setIsLoading(false)
 
     if (tconst)
-      setSearchPageStyle({ "visibility": "hidden" })
+      hideSearchPage()
   }
 
   useEffect(() => {
@@ -102,17 +100,27 @@ const Movie = ({
   }
 
   if (!data || data.length == 0)
-    return <Spinner isLoading={isLoading} style={moviePageStyle}/>
+    return <Spinner isLoading={isLoading}/>
 
-  return <div className={styles.movie_page} style={moviePageStyle}>
+  return <div className={styles.movie_page}>
     <Spinner isLoading={isLoading} />
-    <div className={styles.page_title} style={{ "marginTop": "10px" }}>
-      <span title="go back" style={{ "cursor": "pointer" }} onClick={() => resetMovie(null)}>
-        &lt;&lt;
-      </span>
-      &nbsp; collaboration neighborhood
-      <span className={styles.page_subtitle}>productions by the same cast and crew before and after</span>
-    </div>
+
+    <div className={styles.controls} style={{ "marginTop": "10px" }}>
+
+<span className={styles.page_title}>
+  Long Tail
+
+
+  <span className={styles.page_subtitle}>productions by the same cast and crew before and after</span>
+
+
+  <span className={styles.close_button} title="go back" style={{ "cursor": "pointer" }} onClick={() => resetMovie(null)}>
+    X
+  </span>
+
+</span>
+</div>
+
     <div className={styles.left}>
       <Sidebar
         data={data}

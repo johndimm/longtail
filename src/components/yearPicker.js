@@ -104,7 +104,7 @@ const YearPicker = ({
         onClick={goLeft}
         className={styles.date_left_arrow}>&#10148;
       </span>
-
+      from
       <input
         id='yearstart'
         size="4"
