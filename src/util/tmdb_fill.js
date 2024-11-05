@@ -82,7 +82,7 @@ export const tmdb_fill = async (_data) => {
             data.filter((r) => r.tconst == tconst).forEach((r) => {
                 //console.log('poster:', tmdb_result.poster_path)
                 r.poster_url = url_prefix + tmdb_result.poster_path
-                r.plot_summary = tmdb_result.overview.substring(0,100)
+                r.plot_summary = tmdb_result.overview.substring(0,100) + ". . ."
                 //console.log('replaced with tmdb for ', r.primarytitle, r.primaryname)
                 // console.log(r)
             })

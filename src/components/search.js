@@ -1,4 +1,4 @@
-'use client';
+//  'use client';
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react'
 import styles from "@/styles/Movie.module.css"
 import Genres from "@/components/genres"
@@ -14,7 +14,7 @@ import clsx from 'clsx'
 
 export const CallbackContext = createContext(null);
 
-const NUM_MOVIES = 16
+const NUM_MOVIES = 24
 
 export default function Search({
   _tconst, _nconst, _name, _genres, _yearStart, _yearEnd, _query
@@ -106,13 +106,14 @@ export default function Search({
       return
 
     getData()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }, [genres, numMovies, yearstart, yearend, query, nconst, titletype])
 
   if (!data) // || data.length == 0)
     return null
 
   const isBottom = (el) => {
-    console.log(`scrollTop:${el.scrollTop}, clientHeight:${el.clientHeight}, scrollHeight:${el.scrollHeight}`)
+    // console.log(`scrollTop:${el.scrollTop}, clientHeight:${el.clientHeight}, scrollHeight:${el.scrollHeight}`)
     return el.scrollTop + el.clientHeight + 1 > el.scrollHeight
   }
 
@@ -125,7 +126,7 @@ export default function Search({
       clearTimeout(scrollTimeoutRef.current);
     }
     scrollTimeoutRef.current = setTimeout(() => {
-         setIsScrolling(false);
+      setIsScrolling(false);
     }, 100); // Adjust the delay as needed
 
     const el = e.nativeEvent.srcElement
@@ -174,8 +175,7 @@ export default function Search({
     setNumMovies(NUM_MOVIES)
 
     setGenres(genres)
-    setSearchPageStyle({ "visibility": "visible" })
-    setMoviePageStyle({ "visibility": "hidden" })
+    setupSearchPage()
   }
 
   const resetYear = (year) => {
@@ -187,11 +187,34 @@ export default function Search({
     setYearend(year)
   }
 
+
+  const setupSearchPage = () => {
+    //setSearchPageStyle({ "visibility": "visible" })
+    //setMoviePageStyle({ "visibility": "hidden" })
+    setSearchPageStyle({ "display": "block" })
+    setMoviePageStyle({ "display": "none" })
+  }
+
+  const setupMoviePage = () => {
+    // setMoviePageStyle({ "visibility": "visible" })
+    setMoviePageStyle({ "display": "block" })
+
+  }
+
+  const hideSearchPage = () => {
+    // SearchPage will be hidden when the Movie page is ready.
+    // setSearchPageStyle({ "visibility": "hidden" })
+    setSearchPageStyle({ "display": "none" })
+    // setMoviePageStyle({ "display": "block" })
+
+  }
+
+
   const resetMovie = (tconst) => {
     setMovie(tconst)
 
     if (tconst) {
-      setMoviePageStyle({ "visibility": "visible" })
+      setupMoviePage()
     } else {
       if (data.length == 0)
         // A tconst param was provided, and then from the Movie page the user clicked close.
@@ -199,8 +222,7 @@ export default function Search({
         // So we need to read some data now.
         getData()
 
-      setSearchPageStyle({ "visibility": "visible" })
-      setMoviePageStyle({ "visibility": "hidden" })
+      setupSearchPage()
     }
   }
 
@@ -226,6 +248,8 @@ export default function Search({
     setActor(newNconst)
     if (!newNconst)
       setActorName('')
+
+    setupSearchPage()
   }
 
   const handleOnChange = (e) => {
@@ -278,79 +302,55 @@ export default function Search({
 
   setNavUrl()
 
-  const Banner = () => {
-    return <div className={styles.banner} onScroll={(e) => console.log("scrolling from banner")}>
-      Superficial
-      {actorName}
-      {yearstart} to{yearend}
-      {genres}
-      {query}
-    </div>
-  }
+  const controlPanelHTML = (
+    <div className={styles.controls}>
 
-  const ControlPanel = ( {searchPageStyle }) => {
-    return <div className={styles.controls} style={searchPageStyle}>
-      <div className={styles.page_title}>
-        Superficial
-      </div>
-      <div className={styles.page_subtitle}>
-        the impossible streaming service
-      </div>
-      <div>
-        <label>
-          <input
-            name='titletype'
-            type="radio"
-            defaultChecked={titletype == 'movie'}
-            onChange={
-              (e) => {
-                if (e.target.checked) setTitletype('movie')
-              }
-            } />
-          movie
-        </label>
-        &nbsp;
-
-        <label>
-          <input name='titletype' type="radio"
-            defaultChecked={titletype == 'tvSeries'}
-            onChange={
-              (e) => {
-                if (e.target.checked) setTitletype('tvSeries')
-              }
-            } />
-          tv
-        </label>
-
-
-      </div>
-      <div>
-        <input
-          id="query"
-          ref={queryRef}
-          className={styles.search_input}
-          type="search"
-          onKeyDown={handleKeyDown}
-          onChange={handleOnChange}
-          size="25"
-          defaultValue={query != 'undefined' ? query : null}
-          placeholder='search movies and actors' />
-      </div>
-      <div className={styles.date_widget}>
-
-        <YearPicker
-          setParentYearstart={setYearstart}
-          setParentYearend={setYearend}
-          goLeft={goLeft}
-          goRight={goRight}
-          _yearstart={yearstart}
-          _yearend={yearend} />
+      <div className={styles.widget}>
+        <Actor nconst={nconst} actorName={actorName} resetActor={resetActor} />
       </div>
 
+      <div className={styles.widget}>
+        <div className={styles.page_title}>
+          Long Tail
+        </div>
+        <div className={styles.page_subtitle}>
+          the impossible streaming service
+          <br />
+          <b>
+            "everything ever made"
 
-      <Actor nconst={nconst} actorName={actorName} resetActor={resetActor} />
+          </b>
+        </div>
 
-      <div>
+        <div>
+          <label>
+            <input
+              name='titletype'
+              type="radio"
+              defaultChecked={titletype == 'movie'}
+              onChange={
+                (e) => {
+                  if (e.target.checked) setTitletype('movie')
+                }
+              } />
+            movies
+          </label>
+          &nbsp;
+
+          <label>
+            <input name='titletype' type="radio"
+              defaultChecked={titletype == 'tvSeries'}
+              onChange={
+                (e) => {
+                  if (e.target.checked) setTitletype('tvSeries')
+                }
+              } />
+            tv
+          </label>
+        </div>
+      </div>
+
+      <div className={styles.widget}>
         <Genres
           genres={genres}
           query={query}
@@ -361,46 +361,42 @@ export default function Search({
         />
       </div>
 
+      <div className={styles.date_widget}>
+
+        <YearPicker
+          setParentYearstart={setYearstart}
+          setParentYearend={setYearend}
+          goLeft={goLeft}
+          goRight={goRight}
+          _yearstart={yearstart}
+          _yearend={yearend} />
+
+        <hr />
+
+        <input
+          id="query"
+          ref={queryRef}
+          className={styles.search_input}
+          type="search"
+          onKeyDown={handleKeyDown}
+          onChange={handleOnChange}
+          size="28"
+          defaultValue={query != 'undefined' ? query : null}
+          placeholder='search shows, cast, and crew' />
+      </div>
+
     </div>
-  }
+  )
 
 
-  const SearchResults = ({ searchPageStyle, data, nconst, isScrolling }) => {
-    return <div
-      className={styles.search_results}
-      style={searchPageStyle}
-      onScroll={onScroll}
-
-    >
-      <Sidebar
-        data={data}
-        place='genres'
-        selectedPerson={nconst}
-        isScrolling={isScrolling}
-      />
-    </div>
-  }
-
-  // isScrolling={isScrolling} 
-
-  //       <Spinner isLoading={isLoading} />
-  //       <SearchResults />
-
-  return <CallbackContext.Provider value={callbacks}>
-
-   <Spinner isLoading={isLoading} />
-
-    <Movie
-      tconst={tconst}
-      moviePageStyle={moviePageStyle}
-      setMoviePageStyle={setMoviePageStyle}
-      setSearchPageStyle={setSearchPageStyle} />
-
+  const searchResultsHTML = (
     <div
       className={styles.search_results}
       style={searchPageStyle}
       onScroll={onScroll}
     >
+      {controlPanelHTML}
+
       <Sidebar
         data={data}
         place='genres'
@@ -408,11 +404,45 @@ export default function Search({
         isScrolling={isScrolling}
       />
     </div>
+  )
 
-    <ControlPanel 
-      searchPageStyle= {searchPageStyle}
-    />
+  const movieHTML = (
+    <div
+      className={styles.movie}
+      style={moviePageStyle}
+    >
+
+
+
+      <Movie
+        tconst={tconst}
+        hideSearchPage={hideSearchPage}
+      />
+
+    </div>
+  )
+
+  return <CallbackContext.Provider value={callbacks}>
+
+    <Spinner isLoading={isLoading} />
+
+    {movieHTML}
+    {searchResultsHTML}
 
   </CallbackContext.Provider >
 }
 
+
+/*
+<SearchResults 
+searchPageStyle={searchPageStyle} 
+data={data}
+nconst={nconst}
+isScrolling={isScrolling}
+/>
+
+<ControlPanel 
+ searchPageStyle= {searchPageStyle}
+ />
+ 
+ */
