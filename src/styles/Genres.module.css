@@ -3,11 +3,13 @@
     float: right;
     font-size: 7pt;
     margin-top: 11px;
+    margin-left: 20px;
 }
 
 .checkbox_line {
     vertical-align: bottom;
     height: 22px;
+    width: 175px;
 }
 
 .genres_clear {
@@ -20,5 +22,13 @@
 
 .genres {
     text-align: left;
+    height: 220px;
+    width: 800px;
+    overflow: auto;
+    padding: 20px;
+    column-count: 4;
 }
 
+.xgenres::-webkit-scrollbar  {
+    display: none
+}

@@ -199,7 +199,8 @@
     position: relative;
     float: left;
     background-color: black;
-    padding-left: 280px;
+    padding-left: 10px;
+    padding-top: 10px;
 }
 
 
@@ -209,17 +210,16 @@
 }
 
 .controls {
-    width: 280px;
-    height: 100%;
+    width: 100%;
+    vertical-align: top;
     text-align: center;
-    margin: 10px;
-    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     border: 1px solid gray;
     overflow-x: hidden;
     overflow-y: auto;
     font-size: 100%;
-    position: fixed;
-    background: lightgray;
+    white-space: nowrap;
 }
 
 
@@ -282,7 +282,7 @@
 .year_picker {
     margin-top: 0;
     font-size:2%;
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
 .year_picker span {
@@ -293,16 +293,17 @@
     color: red;
     cursor: pointer;
     font-weight: 600;
-    margin-top: 10px;
+    display: inline-block;
 }
 
 .selected_actor img {
-   width: 180px;
+   height: 200px;
 }
 
 .date_widget {
     margin-top: 10px;
-    border: 1px solid gray;
+    border: 0px solid gray;
+    display: inline-block;
 }
 
 .spinner {
@@ -348,6 +349,7 @@
     display: none;
   }
 
+
 .search_results .card_white {
     background-color: black;
     color: white;
@@ -362,6 +364,7 @@
 .search_results .card_white img {
     width: 0;
     position: absolute;
+    z-index: 3;
 }
 
 .search_results .card_white .card_text {
@@ -382,7 +385,7 @@
 
 
 
-.search_results .controls {
+.controls {
     background-color: lightgray;
     color: black;
 }
@@ -409,4 +412,11 @@
     margin: 5px;
     background-color: black;
     color: white;
+}
+
+.widget {
+    display: inline-block;
+    margin-left: 10px;
+    margin-right: 10px;
+    vertical-align: middle;
 }

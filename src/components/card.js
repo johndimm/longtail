@@ -61,8 +61,9 @@ export const Card = ({
   useEffect(() => {
     if (recs && recs.length > 0) {
       const poster_url = recs[0].poster_url
-      if (!poster_url || poster_url.length == 0) {
-        // console.log("useEffect", poster_url)
+      const primaryTitle = recs[0].primarytitle
+      if (!poster_url || poster_url == '') {
+        console.log("useEffect sets card white", poster_url, primaryTitle)
         setTopClass(clsx(styles.card, styles.card_white))
       }
     }

@@ -36,13 +36,14 @@ const Actor = ({ nconst, actorName, resetActor }) => {
       : <></>
   
     return <div className={styles.selected_actor}>
-      <div onClick={(e) => resetActor(nconst)}>
+      <span onClick={(e) => resetActor(nconst)}>
         {profilePicture}
         <div>
         {actorName}
+        {imdbLink}
         </div>
-      </div>
-      {imdbLink}
+      </span>
+
   
     </div>
   }

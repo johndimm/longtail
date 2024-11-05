@@ -14,7 +14,7 @@ import clsx from 'clsx'
 
 export const CallbackContext = createContext(null);
 
-const NUM_MOVIES = 16
+const NUM_MOVIES = 24
 
 export default function Search({
   _tconst, _nconst, _name, _genres, _yearStart, _yearEnd, _query
@@ -112,14 +112,14 @@ export default function Search({
     return null
 
   const isBottom = (el) => {
-    console.log(`scrollTop:${el.scrollTop}, clientHeight:${el.clientHeight}, scrollHeight:${el.scrollHeight}`)
+    // console.log(`scrollTop:${el.scrollTop}, clientHeight:${el.clientHeight}, scrollHeight:${el.scrollHeight}`)
     return el.scrollTop + el.clientHeight + 1 > el.scrollHeight
   }
 
   const onScroll = (e) => {
     e.preventDefault()
     // return
-    console.log("onScroll")
+    // console.log("onScroll")
     setIsScrolling(true);
     if (scrollTimeoutRef.current) {
       clearTimeout(scrollTimeoutRef.current);
@@ -187,6 +187,11 @@ export default function Search({
     setYearend(year)
   }
 
+  const setupSearchPage = () => {
+    setSearchPageStyle({ "visibility": "visible" })
+    setMoviePageStyle({ "visibility": "hidden" })
+  }
+
   const resetMovie = (tconst) => {
     setMovie(tconst)
 
@@ -199,8 +204,7 @@ export default function Search({
         // So we need to read some data now.
         getData()
 
-      setSearchPageStyle({ "visibility": "visible" })
-      setMoviePageStyle({ "visibility": "hidden" })
+        setupSearchPage()
     }
   }
 
@@ -226,6 +230,8 @@ export default function Search({
     setActor(newNconst)
     if (!newNconst)
       setActorName('')
+  
+    setupSearchPage()
   }
 
   const handleOnChange = (e) => {
@@ -364,6 +370,90 @@ export default function Search({
     </div>
   }
 
+  const controlPanelHTML = (
+      <div className={styles.controls} style={searchPageStyle}>
+
+<div className={styles.widget}>
+          <Actor nconst={nconst} actorName={actorName} resetActor={resetActor} />
+        </div>
+
+
+
+        <div className={styles.widget}>
+        <div className={styles.page_title}>
+          Superficial
+        </div>
+        <div className={styles.page_subtitle}>
+          the impossible streaming service
+        </div>
+
+
+        <div>
+          <label>
+            <input
+              name='titletype'
+              type="radio"
+              defaultChecked={titletype == 'movie'}
+              onChange={
+                (e) => {
+                  if (e.target.checked) setTitletype('movie')
+                }
+              } />
+            movies
+          </label>
+          &nbsp;
+  
+          <label>
+            <input name='titletype' type="radio"
+              defaultChecked={titletype == 'tvSeries'}
+              onChange={
+                (e) => {
+                  if (e.target.checked) setTitletype('tvSeries')
+                }
+              } />
+            tv
+          </label>
+        </div>
+        </div>
+
+        <div className={styles.widget}>
+          <Genres
+            genres={genres}
+            query={query}
+            yearstart={yearstart}
+            yearend={yearend}
+            nconst={nconst}
+            titletype={titletype}
+          />
+        </div>
+
+        <div className={styles.date_widget}>
+          <YearPicker
+            setParentYearstart={setYearstart}
+            setParentYearend={setYearend}
+            goLeft={goLeft}
+            goRight={goRight}
+            _yearstart={yearstart}
+            _yearend={yearend} />
+
+          <input
+            id="query"
+            ref={queryRef}
+            className={styles.search_input}
+            type="search"
+            onKeyDown={handleKeyDown}
+            onChange={handleOnChange}
+            size="25"
+            defaultValue={query != 'undefined' ? query : null}
+            placeholder='search movies and actors' />
+        </div>
+  
+
+  
+      </div>
+  
+  )
+
 
   const SearchResults = ({ searchPageStyle, data, nconst, isScrolling }) => {
     return <div
@@ -381,6 +471,22 @@ export default function Search({
     </div>
   }
 
+  const searchResultsHTML = (
+    <div
+    className={styles.search_results}
+    style={searchPageStyle}
+    onScroll={onScroll}
+  >
+        {controlPanelHTML}
+    <Sidebar
+      data={data}
+      place='genres'
+      selectedPerson={nconst}
+      isScrolling={isScrolling}
+    />
+  </div>
+  )
+
   // isScrolling={isScrolling} 
 
   //       <Spinner isLoading={isLoading} />
@@ -396,23 +502,24 @@ export default function Search({
       setMoviePageStyle={setMoviePageStyle}
       setSearchPageStyle={setSearchPageStyle} />
 
-    <div
-      className={styles.search_results}
-      style={searchPageStyle}
-      onScroll={onScroll}
-    >
-      <Sidebar
-        data={data}
-        place='genres'
-        selectedPerson={nconst}
-        isScrolling={isScrolling}
-      />
-    </div>
+    {searchResultsHTML}
 
-    <ControlPanel 
-      searchPageStyle= {searchPageStyle}
-    />
+
 
   </CallbackContext.Provider >
 }
 
+
+/*
+<SearchResults 
+searchPageStyle={searchPageStyle} 
+data={data}
+nconst={nconst}
+isScrolling={isScrolling}
+/>
+
+<ControlPanel 
+ searchPageStyle= {searchPageStyle}
+ />
+ 
+ */
