@@ -111,7 +111,7 @@ const Movie = ({
   Long Tail
 
 
-  <span className={styles.page_subtitle}>productions by the same cast and crew before and after</span>
+  <span className={styles.page_subtitle}>productions by members of this cast and crew before and after</span>
 
 
   <span className={styles.close_button} title="go back" style={{ "cursor": "pointer" }} onClick={() => resetMovie(null)}>

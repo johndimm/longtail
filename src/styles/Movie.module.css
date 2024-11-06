@@ -2,19 +2,17 @@
 .center,
 .right {
     float: left;
-    font-size: 10pt;
+    font-size: 14.6px;
     width: 35%;
     padding: 20px;
     padding-top: 0;
-    font-size: 80%;
+
 }
 
 .center {
     width: 30%;
     font-size: 12pt;
 }
-
-
 
 .movie_page {
     position: relative;
@@ -33,7 +31,7 @@
     float: left;
     width: 100%;
     margin: 5px;
-    padding: 5px;
+    padding: 10px;
     border: 1px solid rgb(100,100,100,1);
     display: flex;
     align-items: flex-start;
@@ -63,8 +61,8 @@
 
 .card .movie_title {
     font-weight: 600;
-    float: left;
     font-size: 120%;
+    text-align: left;
 }
 
 .center .card .movie_title {
@@ -94,7 +92,12 @@
 
 .card hr {
     clear: both;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.center .card hr {
+    display: none;
 }
 
 .card .star_rating {
@@ -122,7 +125,7 @@
 }
 
 .left .card img, .right .card img {
-    max-width: 50%;
+    max-width: 45%;
     padding-left: 10px;
     display: inline-block;
 }
@@ -147,6 +150,7 @@
     bottom: 3px;
     margin-top: 5px;
     cursor: pointer;
+    text-align: left;
 }
 
 .card .year {
@@ -194,10 +198,6 @@
 }
 
 
-
-
-
-
 .movie_page .page_subtitle{
     margin-left: 10px;
 }
@@ -206,8 +206,6 @@
     width: 100%;
     vertical-align: top;
     text-align: center;
-    padding-left: 20px;
-    padding-right: 20px;
     border: 1px solid gray;
     overflow-x: hidden;
     overflow-y: auto;
@@ -256,7 +254,7 @@
 }
 
 .page_subtitle {
-    font-size: 10pt;
+    font-size: 11pt;
     font-style: italic;
     font-weight: 200;
     width: 200px;
@@ -306,7 +304,7 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    padding-top: 200px;
+    padding-top: 300px;
     text-align: center;
     background-color: rgba(0, 0, 0, 0);
     z-index: 9;
@@ -431,5 +429,16 @@
 .movie .close_button {
     float: right;
     vertical-align: middle;
-    font-weight: 100;
+    font-weight: 1;
+}
+
+.movie_tv_switch {
+    margin-top: 20px;
+}
+
+.movie_page .controls {
+    padding: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-bottom: 10px;
 }

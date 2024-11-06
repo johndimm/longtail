@@ -1,6 +1,7 @@
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import styles from "@/styles/Movie.module.css"
+import { CallbackContext } from '@/components/search'
 
 const YearPicker = ({
   setParentYearstart, setParentYearend, _yearstart, _yearend, goLeft, goRight
@@ -9,6 +10,10 @@ const YearPicker = ({
   // const [key, setKey] = useState(1)
   const [yearstart, setYearstart] = useState(_yearstart || '')
   const [yearend, setYearend] = useState(_yearend || '')
+
+  const callbacks = useContext(CallbackContext)
+  const { resetGenres, resetYear, resetMovie, resetActor
+   } = callbacks
 
   //const yearstartRef = useRef()
   //const yearendRef = useRef()

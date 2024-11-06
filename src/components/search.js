@@ -1,35 +1,22 @@
-//  'use client';
 import React, { useState, useEffect, useRef, createContext, useContext } from 'react'
 import styles from "@/styles/Movie.module.css"
-import Genres from "@/components/genres"
 import { Sidebar } from "@/components/card"
 import Movie from "@/components/movie"
-import Actor from "@/components/actor"
-import YearPicker from "@/components/yearPicker"
 import Spinner from "@/components/spinner"
 import { useRouter } from 'next/router'
-import clsx from 'clsx'
-
-
+import ControlPanel from "@/components/controlPanel"
 
 export const CallbackContext = createContext(null);
-
 const NUM_MOVIES = 24
 
 export default function Search({
-  _tconst, _nconst, _name, _genres, _yearStart, _yearEnd, _query
+  tconst, nconst, genres, yearstart, yearend, query, titletype
 }) {
   const router = useRouter()
 
   const [data, setData] = useState([])
   const [numMovies, setNumMovies] = useState(NUM_MOVIES)
-  const [genres, setGenres] = useState()
-  const [yearstart, setYearstart] = useState()
-  const [yearend, setYearend] = useState()
-  const [query, setQuery] = useState('undefined')
-  const [tconst, setMovie] = useState()
-  const [nconst, setActor] = useState()
-  const [titletype, setTitletype] = useState('movie')
+
   const [actorName, setActorName] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [moviePageStyle, setMoviePageStyle] = useState({ "visibility": "hidden" })
@@ -38,7 +25,8 @@ export default function Search({
   const [isScrolling, setIsScrolling] = useState(false);
   const scrollTimeoutRef = useRef(null);
 
-  const queryRef = useRef()
+  const callbacks = useContext(CallbackContext)
+  const { resetGenres, resetYear, resetMovie, resetActor, resetQuery, setYearstart, setYearend, setTitletype } = callbacks
 
   const snagActorName = (result) => {
     // Get selected actor name after we have some data.
@@ -63,42 +51,21 @@ export default function Search({
     setIsLoading(false)
 
     setData(result)
-    if (result && !_query)
+    if (result && !query)
       snagActorName(result)
   }
 
   useEffect(() => {
-    //return
-    if (!router.isReady)
-      return
+    if (tconst)
+      setupMoviePage()
+    else
+      setupSearchPage()
+  }, [tconst])
 
-    if (_tconst) {
-      resetMovie(_tconst)
-    }
-    else {
-      if (_nconst) {
-        //resetActor(_nconst, _name)
-        resetActor(_nconst)
-      }
-      if (_query) {
-        // console.log("got a query", _query)
-        resetQuery(_query)
-      }
-      if (_genres) {
-        resetGenres(_genres)
-      }
-      if (_yearStart) {
-        if (_yearEnd) {
-          setMovie(null)
-          setNumMovies(NUM_MOVIES)
-          setYearstart(_yearStart)
-          setYearend(_yearEnd)
-        } else {
-          resetYear(_yearStart)
-        }
-      }
-    }
-  }, [_tconst, _nconst, _query, _genres, _yearStart, _yearEnd])
+  useEffect(() => {
+    if (!nconst)
+      setActorName('')
+  }, [nconst])
 
   useEffect(() => {
     // console.log("useEffect, query:", _query, query)
@@ -127,138 +94,29 @@ export default function Search({
     }
     scrollTimeoutRef.current = setTimeout(() => {
       setIsScrolling(false);
-    }, 100); // Adjust the delay as needed
+    }, 100);
 
     const el = e.nativeEvent.srcElement
     if (isBottom(el)) {
-      //document.getElementsByTagName('html')[0].className += " wait";
       setNumMovies(numMovies + NUM_MOVIES)
     }
   }
 
-  const updateDates = (yearstart, yearend) => {
-    const start = document.getElementById('yearstart')
-    start.defaultValue = yearstart
-    const end = document.getElementById('yearend')
-    end.defaultValue = yearend
-    setYearstart(yearstart)
-    setYearend(yearend)
-  }
-
-  const goLeft = (e) => {
-    if (!yearstart || !yearend)
-      return
-
-    const delta = Math.max(yearend - yearstart, 1)
-    updateDates(parseInt(yearstart) - delta, parseInt(yearend) - delta)
-  }
-
-  const goRight = (e) => {
-    if (!yearstart || !yearend)
-      return
-
-    const delta = Math.max(yearend - yearstart, 1)
-    updateDates(parseInt(yearstart) + delta, parseInt(yearend) + delta)
-  }
-
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter') {
-      const text = event.target.value
-      console.log('Text submitted:', text);
-      setQuery(text)
-      event.preventDefault();
-    }
-  }
-
-  const resetGenres = (genres) => {
-    setMovie(null)
-    setNumMovies(NUM_MOVIES)
-
-    setGenres(genres)
-    setupSearchPage()
-  }
-
-  const resetYear = (year) => {
-    resetMovie(null)
-    setNumMovies(NUM_MOVIES)
-
-    console.log('tconst', tconst)
-    setYearstart(year)
-    setYearend(year)
-  }
-
-
   const setupSearchPage = () => {
-    //setSearchPageStyle({ "visibility": "visible" })
-    //setMoviePageStyle({ "visibility": "hidden" })
+
     setSearchPageStyle({ "display": "block" })
     setMoviePageStyle({ "display": "none" })
   }
 
   const setupMoviePage = () => {
-    // setMoviePageStyle({ "visibility": "visible" })
     setMoviePageStyle({ "display": "block" })
-
+    // SearchPage will be hidden when the Movie page is ready.
+    // hideSearchPage()
   }
 
   const hideSearchPage = () => {
-    // SearchPage will be hidden when the Movie page is ready.
-    // setSearchPageStyle({ "visibility": "hidden" })
     setSearchPageStyle({ "display": "none" })
-    // setMoviePageStyle({ "display": "block" })
-
   }
-
-
-  const resetMovie = (tconst) => {
-    setMovie(tconst)
-
-    if (tconst) {
-      setupMoviePage()
-    } else {
-      if (data.length == 0)
-        // A tconst param was provided, and then from the Movie page the user clicked close.
-        // On startup, we switched to Movie mode before Search could be populated.
-        // So we need to read some data now.
-        getData()
-
-      setupSearchPage()
-    }
-  }
-
-  const resetQuery = (query) => {
-    setMovie(null)
-    setNumMovies(NUM_MOVIES)
-    setQuery(query)
-  }
-
-  const resetActor = (_nconst) => {
-    // toggle
-    const newNconst = _nconst == nconst
-      ? null
-      : _nconst
-
-    setMovie(null)
-    setQuery(null)
-    setGenres(null)
-    setNumMovies(NUM_MOVIES)
-
-    if (queryRef.current)
-      queryRef.current.value = ''
-    setActor(newNconst)
-    if (!newNconst)
-      setActorName('')
-
-    setupSearchPage()
-  }
-
-  const handleOnChange = (e) => {
-    const value = e.target.value
-    if (value == '')
-      resetQuery(null)
-  }
-
-
 
   const setNavUrl = () => {
     let navUrl = ''
@@ -276,10 +134,13 @@ export default function Search({
         params.push(`genres=${genres}`)
       }
       if (yearstart) {
-        params.push(`yearStart=${yearstart}`)
+        params.push(`yearstart=${yearstart}`)
       }
       if (yearend) {
-        params.push(`yearEnd=${yearend}`)
+        params.push(`yearend=${yearend}`)
+      }
+      if (titletype) {
+        params.push(`titletype=${titletype}`)
       }
       if (params.length > 0) {
         const p = params.join('&')
@@ -292,111 +153,23 @@ export default function Search({
     }
   }
 
-  const callbacks = {
-    resetGenres: resetGenres,
-    resetYear: resetYear,
-    resetQuery: resetQuery,
-    resetMovie: resetMovie,
-    resetActor: resetActor
-  }
-
-  setNavUrl()
-
-  const controlPanelHTML = (
-    <div className={styles.controls}>
-
-      <div className={styles.widget}>
-        <Actor nconst={nconst} actorName={actorName} resetActor={resetActor} />
-      </div>
-
-      <div className={styles.widget}>
-        <div className={styles.page_title}>
-          Long Tail
-        </div>
-        <div className={styles.page_subtitle}>
-          the impossible streaming service
-          <br />
-          <b>
-            "everything ever made"
-
-          </b>
-        </div>
-
-        <div>
-          <label>
-            <input
-              name='titletype'
-              type="radio"
-              defaultChecked={titletype == 'movie'}
-              onChange={
-                (e) => {
-                  if (e.target.checked) setTitletype('movie')
-                }
-              } />
-            movies
-          </label>
-          &nbsp;
-
-          <label>
-            <input name='titletype' type="radio"
-              defaultChecked={titletype == 'tvSeries'}
-              onChange={
-                (e) => {
-                  if (e.target.checked) setTitletype('tvSeries')
-                }
-              } />
-            tv
-          </label>
-        </div>
-      </div>
-
-      <div className={styles.widget}>
-        <Genres
-          genres={genres}
-          query={query}
-          yearstart={yearstart}
-          yearend={yearend}
-          nconst={nconst}
-          titletype={titletype}
-        />
-      </div>
-
-      <div className={styles.date_widget}>
-
-        <YearPicker
-          setParentYearstart={setYearstart}
-          setParentYearend={setYearend}
-          goLeft={goLeft}
-          goRight={goRight}
-          _yearstart={yearstart}
-          _yearend={yearend} />
-
-        <hr />
-
-        <input
-          id="query"
-          ref={queryRef}
-          className={styles.search_input}
-          type="search"
-          onKeyDown={handleKeyDown}
-          onChange={handleOnChange}
-          size="28"
-          defaultValue={query != 'undefined' ? query : null}
-          placeholder='search shows, cast, and crew' />
-      </div>
-
-    </div>
-  )
-
-
   const searchResultsHTML = (
     <div
       className={styles.search_results}
       style={searchPageStyle}
       onScroll={onScroll}
     >
-      {controlPanelHTML}
-
+      <ControlPanel
+        nconst={nconst}
+        tconst={tconst}
+        genres={genres}
+        yearstart={yearstart}
+        yearend={yearend}
+        query={query}
+        titletype={titletype}
+        setNumMovies={setNumMovies}
+        actorName={actorName}
+      />
       <Sidebar
         data={data}
         place='genres'
@@ -411,29 +184,24 @@ export default function Search({
       className={styles.movie}
       style={moviePageStyle}
     >
-
-
-
       <Movie
         tconst={tconst}
         hideSearchPage={hideSearchPage}
       />
-
     </div>
   )
 
-  return <CallbackContext.Provider value={callbacks}>
+  setNavUrl()
 
+  return <>
     <Spinner isLoading={isLoading} />
-
     {movieHTML}
     {searchResultsHTML}
-
-  </CallbackContext.Provider >
+  </>
 }
 
-
 /*
+
 <SearchResults 
 searchPageStyle={searchPageStyle} 
 data={data}
@@ -441,8 +209,4 @@ nconst={nconst}
 isScrolling={isScrolling}
 />
 
-<ControlPanel 
- searchPageStyle= {searchPageStyle}
- />
- 
- */
+*/

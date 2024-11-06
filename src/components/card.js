@@ -1,6 +1,6 @@
-'useclient'
-import { useContext, useState, useEffect, useRef } from 'react'
-import Image from 'next/image';
+// 'useclient'
+import { useContext, useState, useEffect } from 'react'
+// import Image from 'next/image';
 import styles from "@/styles/Movie.module.css";
 import { CallbackContext } from '@/components/search'
 import clsx from 'clsx'
@@ -54,6 +54,7 @@ export const Card = ({
   isScrolling
 }) => {
   const [topClass, setTopClass] = useState(clsx(styles.card, styles.card_black))
+  
   const callbacks = useContext(CallbackContext)
   const { resetGenres, resetYear, resetMovie, resetActor } = callbacks
 
@@ -65,6 +66,8 @@ export const Card = ({
       if (!poster_url || poster_url == '') {
         console.log("useEffect sets card white", poster_url, primaryTitle)
         setTopClass(clsx(styles.card, styles.card_white))
+      } else {
+        setTopClass(clsx(styles.card, styles.card_black))     
       }
     }
   }, [recs])
@@ -131,15 +134,18 @@ export const Card = ({
     plot_sentence = r1.plot_summary ? r1.plot_summary + '...' : ''
 
   const enterCard = (e) => {
-    //setTimeout ( () => 
-    if (!isScrolling)
-      setTopClass(clsx(styles.card, styles.card_white))
-    //, 500)
+    if (isScrolling)
+      return
+
+    setTopClass(clsx(styles.card, styles.card_white))
   }
 
   const leaveCard = (e) => {
     // return
     //console.log("leaveCard1", r1.poster_url)  
+    if (isScrolling)
+      return
+
     if (r1.poster_url && r1.poster_url != '') {
       //console.log("leaveCard2", r1.poster_url)
       setTopClass(clsx(styles.card, styles.card_black))
@@ -221,15 +227,13 @@ export const Sidebar = ({
 
   return Object.keys(agg).map((tconst, idx) => {
     const recs = agg[tconst]
-    //if (!selectedPerson || recs.find((r) => r.nconst == selectedPerson)) {
+
     return <Card
       key={idx}
       recs={recs}
       selectedPerson={selectedPerson}
       position="sidebar" 
       isScrolling={isScrolling}/>
-    //} else {
-    //  return null
-    //}
+
   })
 }
